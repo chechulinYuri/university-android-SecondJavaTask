@@ -1,22 +1,24 @@
 package com.noveogroup.tree;
 
-import com.noveogroup.model.TreeElement;
+import com.noveogroup.model.Element;
+import com.noveogroup.classesForExample.*;
 
 import java.util.Iterator;
 
 /**
  * Sample implementation.
  */
-public class BinaryTreeImpl<K, V extends TreeElement> implements BinaryTree<K,V> {
+public class BinaryTreeImpl<K, V extends Product> implements BinaryTree<K,V> {
 
-    private ElementTest root;
+    private Element root;
 
     @Override
     public void addElement(K key, V element) {
-        if (root.equals(null)) {
-            root = new ElementTest(key, element);
+        // TODO
+        /*if (root.equals(null)) {
+            root = new Element<K, V>(key, element);
             return;
-        }
+        }*/
     }
 
     @Override
@@ -28,17 +30,5 @@ public class BinaryTreeImpl<K, V extends TreeElement> implements BinaryTree<K,V>
     public Iterator<V> getIterator() {
         //TODO
         return null;
-    }
-
-    public class ElementTest {
-        K key;
-        V value;
-        ElementTest l;
-        ElementTest r;
-
-        ElementTest(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
     }
 }
