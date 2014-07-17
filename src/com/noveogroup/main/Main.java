@@ -5,6 +5,8 @@ import com.noveogroup.classesForExample.*;
 import com.noveogroup.model.Element;
 import com.noveogroup.tree.BinaryTree;
 import com.noveogroup.tree.BinaryTreeImpl;
+import com.sun.xml.internal.messaging.saaj.soap.impl.TreeException;
+
 import java.util.Iterator;
 
 public class Main {
@@ -21,16 +23,18 @@ public class Main {
             tree.addElement(120, new Phone(32000));
             tree.addElement(80, new Tomato(180));
             tree.addElement(1, new Product(999));
+            //tree.addElement(1, new Product(9999)); // Row with AlreadyExistException
 
             printTree(tree);
 
             // remove element
             tree.removeElement(110);
+            // tree.removeElement(1100); // Row with NotExistException
 
             printTree(tree);
 
         } catch (BinaryTreeException e) {
-            //handle the exception
+            System.out.println("EXCEPTION: " + e.toString());
         }
     }
 

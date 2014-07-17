@@ -1,6 +1,8 @@
 package com.noveogroup.tree;
 
 import com.noveogroup.exception.BinaryTreeException;
+import com.noveogroup.exception.ElementAlreadyExistsException;
+import com.noveogroup.exception.ElementNotExistException;
 import com.noveogroup.model.Element;
 import com.noveogroup.classesForExample.*;
 
@@ -15,25 +17,29 @@ public class BinaryTreeImpl<K extends Integer, V extends Product> implements Bin
     public Element root;
 
     @Override
-    public void addElement(K key, V element) {
+    public void addElement(K key, V element) throws BinaryTreeException {
         if (root == null) {
             root = new Element<K, V>(key, element);
             return;
         }
-        if (key.compareTo(root.getKey()) >= 0) {
+        if (key.compareTo(root.getKey()) == 0) {
+            throw new ElementAlreadyExistsException();
+        } else if (key.compareTo(root.getKey()) > 0) {
             addElement(key, element, root.getRight(), root, true);
         } else {
             addElement(key, element, root.getLeft(), root, false);
         }
     }
 
-    private void addElement(K key, V element, Element curr, Element precurr, boolean right) {
+    private void addElement(K key, V element, Element curr, Element precurr, boolean right)  throws BinaryTreeException {
         if (curr == null) {
             curr = new Element<K, V>(key, element);
             if (right) precurr.setRight(curr);
             else precurr.setLeft(curr);
         } else {
-            if (key.compareTo(curr.getKey()) >= 0) {
+            if (key.compareTo(curr.getKey()) == 0) {
+                throw new ElementAlreadyExistsException();
+            } else if (key.compareTo(curr.getKey()) > 0) {
                 addElement(key, element, curr.getRight(), curr, true);
             } else {
                 addElement(key, element, curr.getLeft(), curr, false);
@@ -43,23 +49,17 @@ public class BinaryTreeImpl<K extends Integer, V extends Product> implements Bin
 
     @Override
     public void removeElement(K key) throws BinaryTreeException {
-        try {
-            removeElement(key, root);
-        } catch(BinaryTreeException e) {
-            System.out.println(e.toString());
-        }
+        removeElement(key, root);
     }
 
     private Element removeElement(K key, Element node) throws BinaryTreeException {
         if( node == null ) {
-
+            throw new ElementNotExistException();
         } else if( key.compareTo( node.getKey() ) < 0 ) {
             node.setLeft( removeElement(key, node.getLeft()) );
-        }
-        else if( key.compareTo( node.getKey() ) > 0 )
+        } else if( key.compareTo( node.getKey() ) > 0 )
             node.setRight(removeElement( key, node.getRight() ));
-        else
-        {
+        else {
             if (node.getRight() == null) {
                 node = node.getLeft();
             } else {
@@ -86,30 +86,30 @@ public class BinaryTreeImpl<K extends Integer, V extends Product> implements Bin
 
     public class MineIterator<T extends Element> implements Iterator <T> {
 
-        private Stack<T> stk = new Stack<T>();
+        private Stack<T> stack = new Stack<T>();
 
         public MineIterator() {
-            if(root != null) stk.push((T) root);
+            if(root != null) stack.push((T) root);
         }
 
         @Override
         public boolean hasNext() {
-            return !stk.isEmpty();
+            return !stack.isEmpty();
         }
 
         @Override
         public T next() {
-            T cur = stk.peek();
+            T cur = stack.peek();
             if(cur.getLeft() != null) {
-                stk.push((T) cur.getLeft());
+                stack.push((T) cur.getLeft());
             }
             else {
-                T tmp = stk.pop();
+                T tmp = stack.pop();
                 while( tmp.getRight() == null ) {
-                    if(stk.isEmpty()) return cur;
-                    tmp = stk.pop();
+                    if(stack.isEmpty()) return cur;
+                    tmp = stack.pop();
                 }
-                stk.push((T) tmp.getRight());
+                stack.push((T) tmp.getRight());
             }
 
             return cur;
