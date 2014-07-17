@@ -5,6 +5,7 @@ import com.noveogroup.model.Element;
 import com.noveogroup.classesForExample.*;
 
 import java.util.Iterator;
+import java.util.Stack;
 
 /**
  * Sample implementation.
@@ -12,33 +13,11 @@ import java.util.Iterator;
 public class BinaryTreeImpl<K extends Integer, V extends Product> implements BinaryTree<K,V> {
 
     public Element root;
-    private MineIterator<Element> iter;
-
-    @Override
-    public void print() {
-        print(root);
-    }
-
-    private void print(Element node) {
-        if (node == null) {
-            return;
-        }
-
-        print(node.getLeft());
-        System.out.println(node.getKey());
-        print(node.getRight());
-    }
-
-    @Override
-    public Element getRoot() {
-        return root;
-    }
 
     @Override
     public void addElement(K key, V element) {
-        // TODO
         if (root == null) {
-            root = new Element<K, V>(key, element, null);
+            root = new Element<K, V>(key, element);
             return;
         }
         if (key.compareTo(root.getKey()) >= 0) {
@@ -50,7 +29,7 @@ public class BinaryTreeImpl<K extends Integer, V extends Product> implements Bin
 
     private void addElement(K key, V element, Element curr, Element precurr, boolean right) {
         if (curr == null) {
-            curr = new Element<K, V>(key, element, precurr);
+            curr = new Element<K, V>(key, element);
             if (right) precurr.setRight(curr);
             else precurr.setLeft(curr);
         } else {
@@ -102,7 +81,43 @@ public class BinaryTreeImpl<K extends Integer, V extends Product> implements Bin
 
     @Override
     public Iterator<Element> getIterator() {
-        //TODO
-        return iter;
+        return new MineIterator<Element>();
+    }
+
+    public class MineIterator<T extends Element> implements Iterator <T> {
+
+        private Stack<T> stk = new Stack<T>();
+
+        public MineIterator() {
+            if(root != null) stk.push((T) root);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !stk.isEmpty();
+        }
+
+        @Override
+        public T next() {
+            T cur = stk.peek();
+            if(cur.getLeft() != null) {
+                stk.push((T) cur.getLeft());
+            }
+            else {
+                T tmp = stk.pop();
+                while( tmp.getRight() == null ) {
+                    if(stk.isEmpty()) return cur;
+                    tmp = stk.pop();
+                }
+                stk.push((T) tmp.getRight());
+            }
+
+            return cur;
+        }
+
+        @Override
+        public void remove() {
+
+        }
     }
 }

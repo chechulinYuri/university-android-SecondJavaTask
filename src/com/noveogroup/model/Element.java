@@ -1,26 +1,24 @@
 package com.noveogroup.model;
 
+import com.noveogroup.classesForExample.*;
+
 /**
  * Created by Yuri on 16.07.2014.
  */
-public class Element<K extends Integer, V> implements TreeElement {
+public class Element<K extends Integer, V extends Product> implements TreeElement {
     private K key;
     private V value;
     private Element l;
     private Element r;
-    private Element parent;
 
-    public Element(K key, V value, Element parent) {
+    public Element(K key, V value) {
         this.key = key;
         this.value = value;
-        this.parent = parent;
     }
 
     public K getKey() {
         return key;
     }
-
-    public V getValue() { return value; }
 
     public Element getLeft() {
         return l;
@@ -42,8 +40,7 @@ public class Element<K extends Integer, V> implements TreeElement {
         this.key = key;
     }
 
-    public void setValue(V value) {
-        this.value = value;
+    public V getValue() {
+        return value;
     }
-
 }

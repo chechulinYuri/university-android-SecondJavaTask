@@ -9,9 +9,7 @@ import java.util.Iterator;
  * Binary tree interface. Please add your exceptions to methods.
  */
 public interface BinaryTree <K,V> {
-    Element getRoot();
     void addElement(K key, V element) throws BinaryTreeException;
     void removeElement(K key) throws BinaryTreeException;
-    void print();
     Iterator<Element> getIterator();
 }

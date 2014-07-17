@@ -5,6 +5,10 @@ package com.noveogroup.classesForExample;
  */
 public class Phone extends Product implements TechValue {
 
+    public Phone(int price) {
+        super(price);
+    }
+
     @Override
     public int getElectricityConsumption() {
         return 0;

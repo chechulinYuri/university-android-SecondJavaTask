@@ -5,8 +5,14 @@ package com.noveogroup.classesForExample;
  */
 public class Product implements ProductValue {
 
+    private int price;
+
+    public Product(int price) {
+        this.price = price;
+    }
+
     @Override
     public int getPrice() {
-        return 0;
+        return price;
     }
 }

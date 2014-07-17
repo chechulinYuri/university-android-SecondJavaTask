@@ -5,6 +5,10 @@ package com.noveogroup.classesForExample;
  */
 public class Tomato extends Product implements FoodValue {
 
+    public Tomato(int price) {
+        super(price);
+    }
+
     @Override
     public int getProteins() {
         return 0;
