@@ -20,6 +20,8 @@ public class Element<K extends Integer, V> implements TreeElement {
         return key;
     }
 
+    public V getValue() { return value; }
+
     public Element getLeft() {
         return l;
     }
@@ -35,4 +37,13 @@ public class Element<K extends Integer, V> implements TreeElement {
     public void setRight(Element element) {
         r = element;
     }
+
+    public void setKey(K key) {
+        this.key = key;
+    }
+
+    public void setValue(V value) {
+        this.value = value;
+    }
+
 }

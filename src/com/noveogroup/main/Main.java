@@ -26,6 +26,10 @@ public class Main {
 
             tree.print();
 
+
+            tree.removeElement(110);
+
+            tree.print();
             //get iterator
             /*Iterator<Product> iterator = tree.getIterator();
             while (iterator.hasNext()) {

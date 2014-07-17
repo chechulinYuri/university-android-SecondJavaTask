@@ -11,9 +11,7 @@ import java.util.Iterator;
 public interface BinaryTree <K,V> {
     Element getRoot();
     void addElement(K key, V element) throws BinaryTreeException;
-    void addElement(K key, V element, Element curr, Element precurr, boolean right) throws BinaryTreeException;
     void removeElement(K key) throws BinaryTreeException;
-    void print(Element node);
     void print();
     Iterator<Element> getIterator();
 }
