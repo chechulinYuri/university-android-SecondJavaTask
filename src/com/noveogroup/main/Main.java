@@ -5,8 +5,7 @@ import com.noveogroup.classesForExample.*;
 import com.noveogroup.model.Element;
 import com.noveogroup.tree.BinaryTree;
 import com.noveogroup.tree.BinaryTreeImpl;
-import com.sun.xml.internal.messaging.saaj.soap.impl.TreeException;
-
+import java.io.*;
 import java.util.Iterator;
 
 public class Main {
@@ -23,6 +22,7 @@ public class Main {
             tree.addElement(120, new Phone(32000));
             tree.addElement(80, new Tomato(180));
             tree.addElement(1, new Product(999));
+            tree.addElement(11, new Product(9999));
             //tree.addElement(1, new Product(9999)); // Row with AlreadyExistException
 
             printTree(tree);
@@ -33,7 +33,30 @@ public class Main {
 
             printTree(tree);
 
+            String path = System.getProperty("user.dir") + "/folder.txt";
+            FileInputStream in = null;
+            FileOutputStream out = null;
+
+            in = new FileInputStream(path);
+            out = new FileOutputStream(path);
+
+            ObjectOutputStream outo = new ObjectOutputStream(out);
+            ObjectInputStream ino = new ObjectInputStream(in);
+
+            outo.writeObject(tree);
+
+            BinaryTree newTree = (BinaryTree) ino.readObject();
+
+            printTree(newTree);
+            System.out.println(newTree.getFoliageCount());
+
         } catch (BinaryTreeException e) {
+            System.out.println("EXCEPTION: " + e.toString());
+        } catch (FileNotFoundException e) {
+            System.out.println("EXCEPTION: " + e.toString());
+        } catch (IOException e) {
+            System.out.println("EXCEPTION: " + e.toString());
+        } catch (ClassNotFoundException e) {
             System.out.println("EXCEPTION: " + e.toString());
         }
     }

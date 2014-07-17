@@ -6,15 +6,20 @@ import com.noveogroup.exception.ElementNotExistException;
 import com.noveogroup.model.Element;
 import com.noveogroup.classesForExample.*;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Stack;
 
 /**
  * Sample implementation.
  */
-public class BinaryTreeImpl<K extends Integer, V extends Product> implements BinaryTree<K,V> {
+public class BinaryTreeImpl<K extends Integer & Serializable, V extends Product & Serializable> implements BinaryTree<K,V>, Serializable {
 
     public Element root;
+    private int foliageCount;
 
     @Override
     public void addElement(K key, V element) throws BinaryTreeException {
@@ -82,6 +87,31 @@ public class BinaryTreeImpl<K extends Integer, V extends Product> implements Bin
     @Override
     public Iterator<Element> getIterator() {
         return new MineIterator<Element>();
+    }
+
+    private void writeObject(ObjectOutputStream stream) throws IOException {
+        stream.defaultWriteObject();
+
+        int foliageCount = 0;
+
+        Iterator<Element> iterator = getIterator();
+        while (iterator.hasNext()) {
+            Element next = iterator.next();
+            if (next.getLeft() == null && next.getLeft() == null) {
+                foliageCount ++;
+            }
+        }
+
+        stream.writeInt(foliageCount);
+    }
+
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
+        foliageCount = stream.readInt();
+    }
+
+    public int getFoliageCount() {
+        return foliageCount;
     }
 
     public class MineIterator<T extends Element> implements Iterator <T> {

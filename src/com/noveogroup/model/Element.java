@@ -2,10 +2,12 @@ package com.noveogroup.model;
 
 import com.noveogroup.classesForExample.*;
 
+import java.io.Serializable;
+
 /**
  * Created by Yuri on 16.07.2014.
  */
-public class Element<K extends Integer, V extends Product> implements TreeElement {
+public class Element<K extends Integer & Serializable, V extends Product & Serializable> implements TreeElement, Serializable {
     private K key;
     private V value;
     private Element l;
