@@ -12,5 +12,5 @@ public interface BinaryTree <K,V> {
     void addElement(K key, V element) throws BinaryTreeException;
     void removeElement(K key) throws BinaryTreeException;
     int getFoliageCount();
-    Iterator<Element> getIterator();
+    Iterator<V> getIterator();
 }

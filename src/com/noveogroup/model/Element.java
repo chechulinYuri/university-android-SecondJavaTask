@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by Yuri on 16.07.2014.
  */
-public class Element<K extends Integer & Serializable, V extends Product & Serializable> implements TreeElement, Serializable {
+public class Element<K extends Comparable, V extends Product> implements TreeElement, Serializable {
     private K key;
     private V value;
     private Element l;

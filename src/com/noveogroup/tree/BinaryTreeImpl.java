@@ -10,13 +10,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Iterator;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Sample implementation.
  */
-public class BinaryTreeImpl<K extends Integer & Serializable, V extends Product & Serializable> implements BinaryTree<K,V>, Serializable {
+public class BinaryTreeImpl<K extends Comparable, V extends Product> implements BinaryTree<K,V>, Serializable {
 
     public Element root;
     private int foliageCount;
@@ -85,23 +84,29 @@ public class BinaryTreeImpl<K extends Integer & Serializable, V extends Product 
     }
 
     @Override
-    public Iterator<Element> getIterator() {
-        return new MineIterator<Element>();
+    public Iterator<V> getIterator() {
+        List<V> list = new ArrayList<V>();
+        convertTreeIntoList(root, list);
+        return list.iterator();
+    }
+
+    private void recalculateFoliageCount(Element node) {
+        if (node.getLeft() != null) {
+            recalculateFoliageCount(node.getLeft());
+        }
+        if (node.getLeft() == null && node.getRight() == null) {
+            foliageCount++;
+        }
+        if (node.getRight() != null) {
+            recalculateFoliageCount(node.getRight());
+        }
     }
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
         stream.defaultWriteObject();
 
-        int foliageCount = 0;
-
-        Iterator<Element> iterator = getIterator();
-        while (iterator.hasNext()) {
-            Element next = iterator.next();
-            if (next.getLeft() == null && next.getLeft() == null) {
-                foliageCount ++;
-            }
-        }
-
+        foliageCount = 0;
+        recalculateFoliageCount(root);
         stream.writeInt(foliageCount);
     }
 
@@ -110,44 +115,18 @@ public class BinaryTreeImpl<K extends Integer & Serializable, V extends Product 
         foliageCount = stream.readInt();
     }
 
+    private void convertTreeIntoList(Element node, List list) {
+        if (node.getLeft() != null) {
+            convertTreeIntoList(node.getLeft(), list);
+        }
+        list.add((V) node.getValue());
+        if (node.getRight() != null) {
+            convertTreeIntoList(node.getRight(), list);
+        }
+    }
+
     public int getFoliageCount() {
         return foliageCount;
     }
 
-    public class MineIterator<T extends Element> implements Iterator <T> {
-
-        private Stack<T> stack = new Stack<T>();
-
-        public MineIterator() {
-            if(root != null) stack.push((T) root);
-        }
-
-        @Override
-        public boolean hasNext() {
-            return !stack.isEmpty();
-        }
-
-        @Override
-        public T next() {
-            T cur = stack.peek();
-            if(cur.getLeft() != null) {
-                stack.push((T) cur.getLeft());
-            }
-            else {
-                T tmp = stack.pop();
-                while( tmp.getRight() == null ) {
-                    if(stack.isEmpty()) return cur;
-                    tmp = stack.pop();
-                }
-                stack.push((T) tmp.getRight());
-            }
-
-            return cur;
-        }
-
-        @Override
-        public void remove() {
-
-        }
-    }
 }

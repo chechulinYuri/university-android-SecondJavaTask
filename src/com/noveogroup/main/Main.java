@@ -50,6 +50,11 @@ public class Main {
             printTree(newTree);
             System.out.println(newTree.getFoliageCount());
 
+            ino.close();
+            outo.close();
+            in.close();
+            out.close();
+
         } catch (BinaryTreeException e) {
             System.out.println("EXCEPTION: " + e.toString());
         } catch (FileNotFoundException e) {
@@ -67,10 +72,10 @@ public class Main {
 
         System.out.println("====");
 
-        Iterator<Element> iterator = tree.getIterator();
+        Iterator<Product> iterator = tree.getIterator();
         while (iterator.hasNext()) {
-            Element next = iterator.next();
-            System.out.println("Key: " + next.getKey() + "; Product price: " + next.getValue().getPrice());
+            Product next = iterator.next();
+            System.out.println("Product price: " + next.getPrice());
         }
 
         System.out.println("====");
